@@ -5,4 +5,5 @@ const rootReducer = combineReducers({
   annotations: annotationsReducer,
 });
 
+export type RootReducerState = ReturnType<typeof rootReducer>;
 export default rootReducer;
