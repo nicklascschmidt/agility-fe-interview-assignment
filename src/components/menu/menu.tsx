@@ -95,7 +95,7 @@ const Menu = () => {
         </DropdownButton>
       </HeaderRow>
       <AnnotationTypeList annotations={filteredAnnotations} />
-      {annotations.activeAnnotationId ? <AnnotationActions /> : null}
+      <AnnotationActions />
     </MenuContainer>
   );
 };

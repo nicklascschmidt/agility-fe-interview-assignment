@@ -82,7 +82,7 @@ const AnnotationActions: FC = () => {
         title='Relocate marker'
         onClick={handleRelocateMarkerClick}
         disabled={areButtonsDisabled}
-        variant='info'
+        variant='warning'
       >
         <ArrowsMoveIcon />
       </Button>
@@ -90,10 +90,9 @@ const AnnotationActions: FC = () => {
         title='Center around marker'
         onClick={handleIconClick}
         disabled={areButtonsDisabled}
-        variant='warning'
+        variant='info'
       >
         <CrosshairIcon />
-        {/* bullseye? */}
       </Button>
     </ActionsRow>
   );

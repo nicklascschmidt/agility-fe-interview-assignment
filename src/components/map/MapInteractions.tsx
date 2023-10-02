@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../../redux/annotations_reducer';
 import { RootReducerState } from '../../redux/reducers';
 import { AnnotationMarker } from '../../types/annotationTypes';
-import { ANNOTATION_TYPES_DATA } from '../../constants/annotationConstants';
+import {
+  ANNOTATION_TYPES_DATA,
+  MAP_CLICK_ACTION_TYPE_ADD_NEW,
+  MAP_CLICK_ACTION_TYPE_RELOCATE,
+} from '../../constants/annotationConstants';
 
 type MapInteractionsProps = {
   mapRef: MutableRefObject<mapboxgl.Map>;
@@ -18,7 +22,6 @@ const MapInteractions: FC<MapInteractionsProps> = ({ mapRef }) => {
 
   const handleMapClick = useCallback(
     (e: mapboxgl.MapMouseEvent) => {
-      console.log(e);
       if (annotations.activeAnnotationId) {
         const coordinates: [number, number] = [e.lngLat.lng, e.lngLat.lat];
         const annotationTypeData =
@@ -28,11 +31,30 @@ const MapInteractions: FC<MapInteractionsProps> = ({ mapRef }) => {
           name: annotationTypeData.name,
           mapCoordinates: coordinates,
         };
-        dispatch(actions.addAnnotationMarker(markerData));
+
+        switch (annotations.mapClickAction.actionType) {
+          case MAP_CLICK_ACTION_TYPE_ADD_NEW:
+            dispatch(actions.addAnnotationMarker(markerData));
+            break;
+          case MAP_CLICK_ACTION_TYPE_RELOCATE:
+            dispatch(
+              actions.updateAnnotationMarker({
+                id: annotations.activeAnnotationId,
+                markerData: markerData,
+              })
+            );
+            break;
+          default:
+            break;
+        }
         dispatch(actions.resetMapClickAction());
       }
     },
-    [dispatch, annotations.activeAnnotationId]
+    [
+      dispatch,
+      annotations.activeAnnotationId,
+      annotations.mapClickAction.actionType,
+    ]
   );
 
   useEffect(() => {

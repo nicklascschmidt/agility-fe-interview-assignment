@@ -56,13 +56,13 @@ const annotationsSlice = createSlice({
     },
     updateAnnotationMarker(
       state,
-      action: PayloadAction<{ id: string; data: AnnotationMarker }>
+      action: PayloadAction<{ id: string; markerData: AnnotationMarker }>
     ) {
       const markerIndex = state.annotationMarkers.findIndex(
         (marker) => marker.id === action.payload.id
       );
       const nextMarkers = [...state.annotationMarkers];
-      nextMarkers.splice(markerIndex, 1, action.payload.data);
+      nextMarkers.splice(markerIndex, 1, action.payload.markerData);
       state.annotationMarkers = nextMarkers;
     },
   },
