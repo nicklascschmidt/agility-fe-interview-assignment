@@ -1,13 +1,9 @@
-import { useSelector, useDispatch } from 'react-redux';
-import TriangleIcon from '../../icons/TriangleIcon';
-import EyeIcon from '../../icons/EyeIcon';
-import EyeSlashIcon from '../../icons/EyeSlashIcon';
+import { useSelector } from 'react-redux';
 import FilterIcon from '../../icons/FilterIcon';
 import {
   SPACING_LG,
   SPACING_MD,
   SPACING_SM,
-  SPACING_XS,
 } from '../../constants/styleConstants';
 import styled from 'styled-components/macro';
 import { MouseEventHandler, useEffect, useState } from 'react';
@@ -15,23 +11,18 @@ import {
   COLOR_BACKGROUND,
   COLOR_FOREGROUND,
   COLOR_BORDER,
-  COLOR_SECONDARY,
 } from '../../constants/colorConstants';
 import { RootReducerState } from '../../redux/reducers';
 import { Annotation } from '../../types/annotationTypes';
-import { actions } from '../../redux/annotations_reducer';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import AnnotationActions from './AnnotationActions';
+import AnnotationTypeList from './AnnotationTypeList';
+import { ANNOTATION_TYPES_DATA } from '../../constants/annotationConstants';
 
+const ANNOTATION_OPTIONS = Object.values(ANNOTATION_TYPES_DATA);
 const MENU_WIDTH = '300px';
-
-/*
-TODO:
-- show all icons
-- allow for filtering
-  - search by name
-  - by number of angles
-- show/hide option
-  - show/hide all?
-*/
+const MENU_HEIGHT = '400px';
 
 const MenuContainer = styled.div`
   position: absolute;
@@ -39,7 +30,7 @@ const MenuContainer = styled.div`
   left: ${SPACING_MD};
 
   width: ${MENU_WIDTH};
-  height: ${MENU_WIDTH}; // TODO: height should expand with the container and be capped at X height
+  max-height: ${MENU_HEIGHT};
   padding: ${SPACING_MD} ${SPACING_SM};
   border: 1px solid ${COLOR_BORDER};
   border-radius: ${SPACING_SM};
@@ -58,53 +49,29 @@ const HeaderRow = styled.div`
   gap: ${SPACING_SM};
 `;
 
-const AnnotationsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const AnnotationRow = styled.div<{ $isActive: boolean }>`
-  display: flex;
-  gap: ${SPACING_SM};
-  background-color: ${({ $isActive }) => ($isActive ? COLOR_SECONDARY : '')};
-  padding: ${SPACING_XS};
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const ActionsRow = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  gap: ${SPACING_SM};
-`;
-
+/**
+ * TODO:
+ * if we're awaiting a map click, then mute the opacity on the menu and
+ *  put a message there "awaiting map click" "please choose a location"
+ * "choose a location on map"
+ */
 const Menu = () => {
   const annotations = useSelector(
     (state: RootReducerState) => state.annotations
   );
-  const [filteredAnnotations, setFilteredAnnotations] = useState<Annotation[]>(
-    []
-  );
+  const [filteredAnnotations, setFilteredAnnotations] =
+    useState<Annotation[]>(ANNOTATION_OPTIONS);
   const [activeFilters, setActiveFilters] = useState([]);
 
-  const dispatch = useDispatch();
-
-  /**
-   * TODO: 
-   * add handleFilterClick
-   * add handleSwitchVisibilityClick
-   * add handleAddAnnotationClick
-   */
-  const handleIconClick: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleFilterClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     console.log('icon button clicked', e);
-    // setActiveAnnotation()
+    // setActiveAnnotationId()
   };
 
   // When the filters change, update the list of annotations displayed.
   useEffect(() => {
-    setFilteredAnnotations(annotations.annotationOptions);
-  }, [annotations.annotationOptions, activeFilters]);
+    // setFilteredAnnotations(filteredAnnotations);
+  }, [filteredAnnotations, activeFilters]);
 
   useEffect(() => {
     console.log('annotations', annotations);
@@ -114,43 +81,21 @@ const Menu = () => {
     <MenuContainer>
       <HeaderRow>
         <h3 style={{ margin: 0 }}>Annotation Types</h3>
-        <button onClick={handleIconClick}>
-          <FilterIcon />
-        </button>
+        <DropdownButton title={<FilterIcon />} autoClose='outside'>
+          <Dropdown.Item as='button'>No angles</Dropdown.Item>
+          <Dropdown.Item as='button'>3 angles</Dropdown.Item>
+          <Dropdown.Item as='button'>4 angles</Dropdown.Item>
+          <Dropdown.Item as='button'>{`>4 angles`}</Dropdown.Item>
+          <Dropdown.Item as='button'>
+            <HeaderRow>
+              <div>taksjdf asdkjfh</div>
+              <button>s</button>
+            </HeaderRow>
+          </Dropdown.Item>
+        </DropdownButton>
       </HeaderRow>
-      <AnnotationsContainer>
-        {filteredAnnotations.map((annotation, idx) => {
-          const isActive = annotations.activeAnnotationId === annotation.id;
-          return (
-            <AnnotationRow
-              key={`AnnotationsContainer-filteredAnnotations-${annotation.id}-${idx}`}
-              $isActive={isActive}
-              onClick={() =>
-                dispatch(
-                  actions.setActiveAnnotationId(isActive ? null : annotation.id)
-                )
-              }
-            >
-              <TriangleIcon />
-              {annotation.name}
-            </AnnotationRow>
-          );
-        })}
-      </AnnotationsContainer>
-      {annotations.activeAnnotationId ? (
-        <ActionsRow>
-          <button onClick={handleIconClick}>
-            <EyeSlashIcon />
-          </button>
-          {/* 
-        TODO:
-        if not on map yet, allow user to add to map - click on map to submit (disallow any other click, or can cancel)
-        if already on map, allow user to move position - i.e. click on map to submit new location
-
-        allow user to center the map around a certain icon
-        */}
-        </ActionsRow>
-      ) : null}
+      <AnnotationTypeList annotations={filteredAnnotations} />
+      {annotations.activeAnnotationId ? <AnnotationActions /> : null}
     </MenuContainer>
   );
 };
