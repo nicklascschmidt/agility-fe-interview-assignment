@@ -45,6 +45,8 @@ export const ANNOTATION_TYPES_DATA: Record<Annotation['id'], Annotation> = {
   },
 };
 
+export const ANNOTATION_OPTIONS = Object.values(ANNOTATION_TYPES_DATA);
+
 export const MAP_CLICK_ACTION_TYPE_ADD_NEW = 'ADD_NEW';
 export const MAP_CLICK_ACTION_TYPE_REMOVE_FROM = 'REMOVE_FROM';
 export const MAP_CLICK_ACTION_TYPE_RELOCATE = 'RELOCATE';
