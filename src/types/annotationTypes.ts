@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { MapCoordinates } from './mapTypes';
 
 export type AnnotationIds =
   | 'circle'
@@ -24,5 +25,5 @@ export type Annotation = {
 export type AnnotationMarker = {
   id: AnnotationIds;
   name: AnnotationName; // this is populated from ANNOTATION_TYPES_DATA at the moment, but could be user-inputted in the future
-  mapCoordinates: [number, number]; // [lat, lng]
+  mapCoordinates: MapCoordinates;
 };

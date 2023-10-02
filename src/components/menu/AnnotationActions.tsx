@@ -34,27 +34,31 @@ const AnnotationActions: FC = () => {
     [annotations.annotationMarkers, annotations.activeAnnotationId]
   );
 
-  const handleIconClick: MouseEventHandler<HTMLButtonElement> = (e) => {
-    console.log('icon button clicked', e);
-    // setActiveAnnotationId()
-  };
-
-  const handleAddToMapClick: MouseEventHandler<HTMLButtonElement> = (_e) => {
+  const handleAddToMapClick: MouseEventHandler<HTMLButtonElement> = () => {
     dispatch(actions.setMapClickAction(MAP_CLICK_ACTION_TYPE_ADD_NEW));
   };
 
-  const handleRemoveFromMapClick: MouseEventHandler<HTMLButtonElement> = (
-    _e
-  ) => {
+  const handleRemoveFromMapClick: MouseEventHandler<HTMLButtonElement> = () => {
     if (annotations.activeAnnotationId) {
       dispatch(actions.removeAnnotationMarker(annotations.activeAnnotationId));
     }
   };
 
-  const handleRelocateMarkerClick: MouseEventHandler<HTMLButtonElement> = (
-    _e
-  ) => {
+  const handleRelocateMarkerClick: MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
     dispatch(actions.setMapClickAction(MAP_CLICK_ACTION_TYPE_RELOCATE));
+  };
+
+  const handleCenterAroundMarker: MouseEventHandler<HTMLButtonElement> = () => {
+    const activeMarkerCoordinates = annotations.annotationMarkers.find(
+      ({ id }) => id === annotations.activeAnnotationId
+    );
+    if (activeMarkerCoordinates) {
+      dispatch(
+        actions.setMapFlyToCoordinates(activeMarkerCoordinates.mapCoordinates)
+      );
+    }
   };
 
   return (
@@ -81,15 +85,15 @@ const AnnotationActions: FC = () => {
       <Button
         title='Relocate marker'
         onClick={handleRelocateMarkerClick}
-        disabled={areButtonsDisabled}
+        disabled={areButtonsDisabled || !isMarkerPresentOnMap}
         variant='warning'
       >
         <ArrowsMoveIcon />
       </Button>
       <Button
         title='Center around marker'
-        onClick={handleIconClick}
-        disabled={areButtonsDisabled}
+        onClick={handleCenterAroundMarker}
+        disabled={areButtonsDisabled || !isMarkerPresentOnMap}
         variant='info'
       >
         <CrosshairIcon />

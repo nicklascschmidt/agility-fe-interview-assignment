@@ -2,14 +2,15 @@ import { MutableRefObject, useEffect, useRef } from 'react';
 import mapboxgl, { LngLatLike } from 'mapbox-gl';
 import './map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import MapInteractions from './MapInteractions';
 import { RootReducerState } from '../../redux/reducers';
 import { useSelector } from 'react-redux';
 import MapMarker from './MapMarker';
+import useMapInteractions from '../../hooks/useMapInteractions';
 
 const Map = () => {
   const mapContainerRef = useRef() as MutableRefObject<HTMLDivElement>;
   const mapRef = useRef() as MutableRefObject<mapboxgl.Map>;
+  useMapInteractions({ mapRef });
 
   const annotations = useSelector(
     (state: RootReducerState) => state.annotations
@@ -63,9 +64,6 @@ const Map = () => {
 
   return (
     <div id='map' ref={mapContainerRef}>
-      {annotations.mapClickAction.isAwaitingMapClick && (
-        <MapInteractions mapRef={mapRef} />
-      )}
       {annotations.annotationMarkers.map((marker) => (
         <MapMarker mapRef={mapRef} marker={marker} />
       ))}

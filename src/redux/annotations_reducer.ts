@@ -4,6 +4,7 @@ import {
   MAP_CLICK_ACTION_TYPE_ADD_NEW,
   MAP_CLICK_ACTION_TYPE_RELOCATE,
 } from '../constants/annotationConstants';
+import { MapCoordinates } from '../types/mapTypes';
 
 const initialState = {
   activeAnnotationId: null as Annotation['id'] | null,
@@ -15,16 +16,16 @@ const initialState = {
       | null,
   },
   annotationMarkers: [] as AnnotationMarker[],
+  mapFlyToCoordinates: null as MapCoordinates | null,
 };
 
 const annotationsSlice = createSlice({
   name: 'annotations',
   initialState,
   reducers: {
-    // TODO: change these to typeof initialState.activeAnnotationId etc
     setActiveAnnotationId(
       state,
-      action: PayloadAction<Annotation['id'] | null>
+      action: PayloadAction<typeof initialState.activeAnnotationId>
     ) {
       state.activeAnnotationId = action.payload;
     },
@@ -56,7 +57,10 @@ const annotationsSlice = createSlice({
     },
     updateAnnotationMarker(
       state,
-      action: PayloadAction<{ id: string; markerData: AnnotationMarker }>
+      action: PayloadAction<{
+        id: AnnotationMarker['id'];
+        markerData: AnnotationMarker;
+      }>
     ) {
       const markerIndex = state.annotationMarkers.findIndex(
         (marker) => marker.id === action.payload.id
@@ -64,6 +68,12 @@ const annotationsSlice = createSlice({
       const nextMarkers = [...state.annotationMarkers];
       nextMarkers.splice(markerIndex, 1, action.payload.markerData);
       state.annotationMarkers = nextMarkers;
+    },
+    setMapFlyToCoordinates(
+      state,
+      action: PayloadAction<typeof initialState.mapFlyToCoordinates>
+    ) {
+      state.mapFlyToCoordinates = action.payload;
     },
   },
 });
