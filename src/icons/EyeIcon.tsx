@@ -1,4 +1,4 @@
-export default () => (
+const EyeIcon = () => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width='16'
@@ -11,3 +11,5 @@ export default () => (
     <path d='M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z' />
   </svg>
 );
+
+export default EyeIcon;

@@ -1,10 +1,19 @@
-import React, { useEffect, useRef } from 'react';
+import { MutableRefObject, useEffect, useRef } from 'react';
 import mapboxgl, { LngLatLike } from 'mapbox-gl';
 import './map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import MapInteractions from './MapInteractions';
+import { RootReducerState } from '../../redux/reducers';
+import { useSelector } from 'react-redux';
+import MapMarker from './MapMarker';
 
 const Map = () => {
-  const mapContainerRef = useRef(null);
+  const mapContainerRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const mapRef = useRef() as MutableRefObject<mapboxgl.Map>;
+
+  const annotations = useSelector(
+    (state: RootReducerState) => state.annotations
+  );
 
   useEffect(() => {
     if (process.env.REACT_APP_MAPBOXGL_API_KEY === undefined) {
@@ -32,6 +41,8 @@ const Map = () => {
         bounds: bounds,
         fitBoundsOptions: { padding: 20 }, // padding around the bounding box
       });
+      // Store the map reference to give other components access to the map
+      mapRef.current = map;
 
       map.on('load', function () {
         // Add image of building and place on map
@@ -48,9 +59,18 @@ const Map = () => {
         });
       });
     }
-  }, [mapContainerRef.current]);
+  }, [mapContainerRef]);
 
-  return <div id='map' ref={mapContainerRef} />;
+  return (
+    <div id='map' ref={mapContainerRef}>
+      {annotations.mapClickAction.isAwaitingMapClick && (
+        <MapInteractions mapRef={mapRef} />
+      )}
+      {annotations.annotationMarkers.map((marker) => (
+        <MapMarker mapRef={mapRef} marker={marker} />
+      ))}
+    </div>
+  );
 };
 
 export default Map;
