@@ -11,31 +11,37 @@ export const ANNOTATION_TYPES_DATA: Record<Annotation['id'], Annotation> = {
     id: 'circle',
     name: 'Circle',
     icon: <CircleIcon />,
+    numOfAngles: 0,
   },
   triangle: {
     id: 'triangle',
     name: 'Triangle',
     icon: <TriangleIcon />,
+    numOfAngles: 3,
   },
   square: {
     id: 'square',
     name: 'Square',
     icon: <SquareIcon />,
+    numOfAngles: 4,
   },
   diamond: {
     id: 'diamond',
     name: 'Diamond',
     icon: <DiamondIcon />,
+    numOfAngles: 4,
   },
   pentagon: {
     id: 'pentagon',
     name: 'Pentagon',
     icon: <PentagonIcon />,
+    numOfAngles: 5,
   },
   hexagon: {
     id: 'hexagon',
     name: 'Hexagon',
     icon: <HexagonIcon />,
+    numOfAngles: 6,
   },
 };
 

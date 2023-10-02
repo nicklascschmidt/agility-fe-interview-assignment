@@ -70,7 +70,7 @@ const useMapInteractions = ({ mapRef }: UseMapInteractionsProps): void => {
     if (annotations.mapClickAction.isAwaitingMapClick) {
       mapRefToCleanup.on('click', handleMapClick);
     } else {
-      mapRefToCleanup.off('click', handleMapClick);
+      mapRefToCleanup?.off('click', handleMapClick);
     }
     return () => {
       mapRefToCleanup?.off('click', handleMapClick);

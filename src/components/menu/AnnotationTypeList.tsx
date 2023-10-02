@@ -11,6 +11,7 @@ const AnnotationsContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
+  transition: height .5s ease-in-out;
 `;
 
 const AnnotationRow = styled.div<{ $isActive: boolean }>`

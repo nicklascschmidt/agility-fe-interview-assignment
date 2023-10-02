@@ -20,6 +20,7 @@ export type Annotation = {
   id: AnnotationIds;
   name: AnnotationName;
   icon: ReactNode;
+  numOfAngles: number;
 };
 
 export type AnnotationMarker = {

@@ -20,6 +20,11 @@ const ActionsRow = styled.div`
   gap: ${SPACING_SM};
 `;
 
+const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const AnnotationActions: FC = () => {
   const annotations = useSelector(
     (state: RootReducerState) => state.annotations
@@ -70,7 +75,9 @@ const AnnotationActions: FC = () => {
           disabled={areButtonsDisabled}
           variant='danger'
         >
-          <DashIcon />
+          <IconContainer>
+            <DashIcon />
+          </IconContainer>
         </Button>
       ) : (
         <Button
@@ -79,7 +86,9 @@ const AnnotationActions: FC = () => {
           disabled={areButtonsDisabled}
           variant='success'
         >
-          <PlusIcon />
+          <IconContainer>
+            <PlusIcon />
+          </IconContainer>
         </Button>
       )}
       <Button
@@ -88,7 +97,9 @@ const AnnotationActions: FC = () => {
         disabled={areButtonsDisabled || !isMarkerPresentOnMap}
         variant='warning'
       >
-        <ArrowsMoveIcon />
+        <IconContainer>
+          <ArrowsMoveIcon />
+        </IconContainer>
       </Button>
       <Button
         title='Center around marker'
@@ -96,7 +107,9 @@ const AnnotationActions: FC = () => {
         disabled={areButtonsDisabled || !isMarkerPresentOnMap}
         variant='info'
       >
-        <CrosshairIcon />
+        <IconContainer>
+          <CrosshairIcon />
+        </IconContainer>
       </Button>
     </ActionsRow>
   );
