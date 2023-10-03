@@ -28,6 +28,8 @@ const useMapInteractions = ({ mapRef }: UseMapInteractionsProps): void => {
   //  marker or update a marker's position.
   const handleMapClick = useCallback(
     (e: mapboxgl.MapMouseEvent) => {
+      console.log('registering map click', e);
+
       if (annotations.activeAnnotationId) {
         const coordinates: MapCoordinates = [e.lngLat.lng, e.lngLat.lat];
         const annotationTypeData =
@@ -76,6 +78,17 @@ const useMapInteractions = ({ mapRef }: UseMapInteractionsProps): void => {
       mapRefToCleanup?.off('click', handleMapClick);
     };
   }, [mapRef, handleMapClick, annotations.mapClickAction.isAwaitingMapClick]);
+
+  // If we're awaiting a map click, then change the cursor, but otherwise keep the default mapbox setting.
+  useEffect(() => {
+    if (mapRef.current) {
+      if (annotations.mapClickAction.isAwaitingMapClick) {
+        mapRef.current.getCanvas().style.cursor = 'crosshair';
+      } else {
+        mapRef.current.getCanvas().style.cursor = '';
+      }
+    }
+  }, [mapRef, annotations.mapClickAction.isAwaitingMapClick]);
 
   // When the user clicks to go to a marker's position, fire mapbox's flyTo(coordinates) method.
   useEffect(() => {
