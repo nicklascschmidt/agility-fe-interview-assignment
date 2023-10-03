@@ -64,8 +64,12 @@ const Map = () => {
 
   return (
     <div id='map' ref={mapContainerRef}>
-      {annotations.annotationMarkers.map((marker) => (
-        <MapMarker mapRef={mapRef} marker={marker} />
+      {annotations.annotationMarkers.map((marker, idx) => (
+        <MapMarker
+          key={`Map-annotationMarkers-${marker.id}-${idx}`}
+          mapRef={mapRef}
+          marker={marker}
+        />
       ))}
     </div>
   );
