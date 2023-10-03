@@ -27,11 +27,11 @@ const IconContainer = styled.div`
   align-items: center;
 `;
 
-type AnnotationTypeListProps = {
+type AnnotationsListProps = {
   annotations: Annotation[];
 };
 
-const AnnotationTypeList: FC<AnnotationTypeListProps> = ({ annotations }) => {
+const AnnotationsList: FC<AnnotationsListProps> = ({ annotations }) => {
   const stateAnnotations = useSelector(
     (state: RootReducerState) => state.annotations
   );
@@ -58,4 +58,4 @@ const AnnotationTypeList: FC<AnnotationTypeListProps> = ({ annotations }) => {
   );
 };
 
-export default AnnotationTypeList;
+export default AnnotationsList;

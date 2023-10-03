@@ -76,6 +76,8 @@ const AnnotationFilterButton: FC<AnnotationFilterButtonProps> = ({
     [activeFilterFunctions]
   );
 
+  // When any filter item button is clicked, toggle that dropdownOption's isActive property.
+  // From there, the useEffect will handle updating the list of relevant annotations.
   const handleFilterItemClick = (optionId: string) => {
     const nextDropdownOptions = dropdownOptions.map((annotationOption) =>
       optionId === annotationOption.id

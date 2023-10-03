@@ -12,7 +12,7 @@ import {
 } from '../../constants/colorConstants';
 import { Annotation } from '../../types/annotationTypes';
 import AnnotationActions from './AnnotationActions';
-import AnnotationTypeList from './AnnotationTypeList';
+import AnnotationsList from './AnnotationsList';
 import { ANNOTATION_OPTIONS } from '../../constants/annotationConstants';
 import AnnotationFilterButton from './AnnotationFilterButton';
 import { useSelector } from 'react-redux';
@@ -104,7 +104,7 @@ const Menu = () => {
               setFilteredAnnotations={setFilteredAnnotations}
             />
           </HeaderRow>
-          <AnnotationTypeList annotations={filteredAnnotations} />
+          <AnnotationsList annotations={filteredAnnotations} />
           <AnnotationActions />
         </MenuContainer>
       </MutedOpacityOverlay>

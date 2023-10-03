@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 import { MapCoordinates } from './mapTypes';
 
+// These IDs are used to index annotations and markers,
+//  but the names could be arbitrary UUIDs too.
 export type AnnotationIds =
   | 'circle'
   | 'triangle'
