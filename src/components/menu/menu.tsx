@@ -99,7 +99,7 @@ const Menu = () => {
           $isAwaitingMapClick={annotations.mapClickAction.isAwaitingMapClick}
         >
           <HeaderRow>
-            <h3 style={{ margin: 0 }}>Annotation</h3>
+            <h3 style={{ margin: 0 }}>Annotations</h3>
             <AnnotationFilterButton
               setFilteredAnnotations={setFilteredAnnotations}
             />

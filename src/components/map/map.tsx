@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import mapboxgl, { LngLatLike } from 'mapbox-gl';
 import './map.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -10,6 +10,7 @@ import useMapInteractions from '../../hooks/useMapInteractions';
 const Map = () => {
   const mapContainerRef = useRef() as MutableRefObject<HTMLDivElement>;
   const mapRef = useRef() as MutableRefObject<mapboxgl.Map>;
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
   useMapInteractions({ mapRef });
 
   const annotations = useSelector(
@@ -58,19 +59,23 @@ const Map = () => {
           source: 'building-image',
           paint: { 'raster-opacity': 0.85 }, // adjust transparency as needed
         });
+
+        setIsMapLoaded(true);
       });
     }
   }, [mapContainerRef]);
 
   return (
     <div id='map' ref={mapContainerRef}>
-      {annotations.annotationMarkers.map((marker, idx) => (
-        <MapMarker
-          key={`Map-annotationMarkers-${marker.id}-${idx}`}
-          mapRef={mapRef}
-          marker={marker}
-        />
-      ))}
+      {isMapLoaded
+        ? annotations.annotationMarkers.map((marker, idx) => (
+            <MapMarker
+              key={`Map-annotationMarkers-${marker.id}-${idx}`}
+              mapRef={mapRef}
+              marker={marker}
+            />
+          ))
+        : null}
     </div>
   );
 };

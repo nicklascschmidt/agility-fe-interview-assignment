@@ -28,8 +28,6 @@ const useMapInteractions = ({ mapRef }: UseMapInteractionsProps): void => {
   //  marker or update a marker's position.
   const handleMapClick = useCallback(
     (e: mapboxgl.MapMouseEvent) => {
-      console.log('registering map click', e);
-
       if (annotations.activeAnnotationId) {
         const coordinates: MapCoordinates = [e.lngLat.lng, e.lngLat.lat];
         const annotationTypeData =
