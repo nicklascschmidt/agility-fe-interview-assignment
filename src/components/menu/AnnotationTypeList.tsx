@@ -18,10 +18,8 @@ const AnnotationRow = styled.div<{ $isActive: boolean }>`
   display: flex;
   gap: ${SPACING_SM};
   background-color: ${({ $isActive }) => ($isActive ? COLOR_SECONDARY : '')};
-  padding: ${SPACING_XS};
-  &:hover {
-    cursor: pointer;
-  }
+  padding: ${SPACING_XS} ${SPACING_SM};
+  cursor: pointer;
 `;
 
 const IconContainer = styled.div`
